@@ -16,3 +16,5 @@ def load_json():
         for line in f: 
             data.append(json.loads(line.strip()))
     dblp.insert_many(data)
+if __name__ == "__main__":
+    load_json()
