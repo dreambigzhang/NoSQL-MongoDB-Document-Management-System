@@ -23,7 +23,8 @@ def load_json():
             data.append(json.loads(line.strip()))
 
     dblp.insert_many(data)
-    for line in data:
-        print(line)
+    #for line in data:
+    #    print(line)
+    return port_num  # to get port number and connect
 if __name__ == "__main__":
     load_json()
