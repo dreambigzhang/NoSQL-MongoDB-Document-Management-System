@@ -3,6 +3,12 @@ from pymongo import MongoClient
 
 def load_json():
     json_file = input("Input a json file: ")
+    while(1):
+        try: 
+            open(json_file)
+            break
+        except:
+            json_file = input("Invalid file, input a valid file: ")
     port_num = input("Input a port number: ")
     client = MongoClient('mongodb://localhost:' + port_num)
 
