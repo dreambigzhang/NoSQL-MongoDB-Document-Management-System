@@ -11,9 +11,14 @@ def searchArticle(port_num):
     client = MongoClient('mongodb://localhost:' + port_num)
     db = client['291db']
 
-    userInput = input("Input one or more keywords all separated by a space: ").split()
-    print(userInput)
-
+    userInput = input("Input one or more keywords all separated by a space: ").split()  # list of separated keywords
+    # print(userInput)
+    results = []
+    for keyword in userInput: 
+        keyword = keyword.lower()
+        results.append(db.dblp.find({"$or": [ {"title":keyword}, { "authors":keyword}, { "abstract":keyword}, { "venue":keyword}, { "year":int(keyword)}] }))  # fix int keyword
+    for line in results: 
+        print(results)
 
 if __name__ == "__main__":
     searchArticle("27017")
