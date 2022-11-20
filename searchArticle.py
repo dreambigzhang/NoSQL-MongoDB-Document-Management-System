@@ -45,7 +45,7 @@ def searchArticle(port_num):
             selection = int(selection) 
         except: 
             break
-        try:
+        try:  #doesnt fully work
             print(selection)
             selectAns = results[selection - 1]
             print("Id:", selectAns["id"])
