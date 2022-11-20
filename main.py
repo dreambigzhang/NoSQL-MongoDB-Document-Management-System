@@ -11,8 +11,10 @@ def clear(): # clear screen for user
     else:
         _ = system('clear')
 
+port_num = load_json()
+
 def main():
-    port_num = load_json()
+
 
 
     action = input("Enter\n1 Search for articles\n2 Search for authors\n3 List the venues\n4 Add an article\nAnything else to exit program \n").strip()
@@ -34,3 +36,6 @@ def main():
         main()
     else:
         quit()
+
+if __name__ == "__main__":
+    main()

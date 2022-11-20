@@ -1,5 +1,14 @@
 import pymongo
 from pymongo import MongoClient
+from os import system, name
+def clear(): # clear screen for user
+    if name == 'nt':
+        _ = system('cls')
+    else:
+        _ = system('clear')
+
+
+
 def searchArticle(port_num): 
     '''
     Search for articles The user should be able to provide one or more keywords, and the system should retrieve all articles that match all those keywords
@@ -8,22 +17,47 @@ def searchArticle(port_num):
     abstract and the authors in addition to the fields shown before. If the article is referenced by other articles, the id, the title, and the year of those
     references should be also listed
     '''
+    clear()
     client = MongoClient('mongodb://localhost:' + port_num)
     db = client['291db']
 
     userInput = input("Input one or more keywords all separated by a space: ")  # list of separated keywords
+    clear()
     # print(userInput)
     db.dblp.create_index([("abstract", pymongo.TEXT), ("authors" , pymongo.TEXT), ("title", pymongo.TEXT), ("venue", pymongo.TEXT), ("year",pymongo.TEXT)])
 
+    results = []
     results = db.dblp.find({"$text": { "$search": userInput }})   
 
+    indexCounter = 0
     for line in results:
+        print("Result #" + str(indexCounter + 1))
+        indexCounter += 1
         print("Id:", line["id"])
         print("Title:", line["title"])
         print("Year:", line["year"])
         print("Venue:", line["venue"])
-        print("\n")
+        print()
 
+    selection = input("Input result number to see more about it. Or input anything else to exit: ")
+    while(1): 
+        try:
+            selection = int(selection) 
+        except: 
+            break
+        try:
+            print(selection)
+            selectAns = results[selection - 1]
+            print("Id:", selectAns["id"])
+            print("Title:", selectAns["title"])
+            print("Year:", selectAns["year"])
+            print("Venue:", selectAns["venue"])
+            print("Abstract:", selectAns["abstract"])
+            print("Authors", selectAns["authors"])
+            print()
+        except Exception as e: 
+            print(e)
+            selection = input("Result number doesn't exist, input again")
 
 
 if __name__ == "__main__":
