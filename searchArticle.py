@@ -1,5 +1,5 @@
+import pymongo
 from pymongo import MongoClient
-
 def searchArticle(port_num): 
     '''
     Search for articles The user should be able to provide one or more keywords, and the system should retrieve all articles that match all those keywords
@@ -11,14 +11,20 @@ def searchArticle(port_num):
     client = MongoClient('mongodb://localhost:' + port_num)
     db = client['291db']
 
-    userInput = input("Input one or more keywords all separated by a space: ").split()  # list of separated keywords
+    userInput = input("Input one or more keywords all separated by a space: ")  # list of separated keywords
     # print(userInput)
-    results = []
-    for keyword in userInput: 
-        keyword = keyword.lower()
-        results.append(db.dblp.find({"$or": [ {"title":keyword}, { "authors":keyword}, { "abstract":keyword}, { "venue":keyword}, { "year":int(keyword)}] }))  # fix int keyword
-    for line in results: 
-        print(results)
+    db.dblp.create_index([("abstract", pymongo.TEXT), ("authors" , pymongo.TEXT), ("title", pymongo.TEXT), ("venue", pymongo.TEXT), ("year",pymongo.TEXT)])
+
+    results = db.dblp.find({"$text": { "$search": userInput }})   
+
+    for line in results:
+        print("Id:", line["id"])
+        print("Title:", line["title"])
+        print("Year:", line["year"])
+        print("Venue:", line["venue"])
+        print("\n")
+
+
 
 if __name__ == "__main__":
     searchArticle("27017")
