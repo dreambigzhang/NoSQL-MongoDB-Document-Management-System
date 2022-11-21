@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+import pymongo
 import json
 def listVenues(db): 
     """
@@ -8,22 +9,20 @@ def listVenues(db):
     the number of articles that reference a paper in that venue. Sort the result based on the number of papers that reference the venue with
     the top most cited venues shown first. 
     """
-    f = open('dblp-ref-1k.json')
-    articlesJson = json.load(f)
     
-    articles = db["articles"]
-    articles.insert_many(articlesJson)
-
     print("**List Top Venues")
+    
     topNum = input("Enter the number of top venues: ")
+    db.dblp.create_index([("reference",pymongo.TEXT)])
 
-    cursor = articles.aggregate([
+
+    cursor = db.dblp.aggregate([
         {
-            "$group" : { 
+            "$group" : {
                 "_id" : "$venue",
                 "artCount":{"$count":1},
-                "refCount": {articles.find({"$reference":"id"}).count()}
-            }  
+                "refCount": {db.dblp.find({"$text": { "$search": "id"}}).count()}
+            }
         },
         {
             "$project":
@@ -36,4 +35,6 @@ def listVenues(db):
             "$limit": topNum
         }
     ])
+    for venue in cursor:
+        print(venue)
     quit()
