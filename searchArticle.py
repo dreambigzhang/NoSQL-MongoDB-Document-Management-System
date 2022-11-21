@@ -30,7 +30,9 @@ def searchArticle(port_num):
     results = db.dblp.find({"$text": { "$search": userInput }})   
 
     indexCounter = 0
+    resultList = []
     for line in results:
+        resultList.append(line)
         print("Result #" + str(indexCounter + 1))
         indexCounter += 1
         print("Id:", line["id"])
@@ -46,18 +48,19 @@ def searchArticle(port_num):
         except: 
             break
         try:  #doesnt fully work
-            print(selection)
-            selectAns = results[selection - 1]
+            selectAns = resultList[selection -1]
             print("Id:", selectAns["id"])
             print("Title:", selectAns["title"])
             print("Year:", selectAns["year"])
             print("Venue:", selectAns["venue"])
             print("Abstract:", selectAns["abstract"])
-            print("Authors", selectAns["authors"])
+            print("Authors:", ", ".join(selectAns["authors"]))
             print()
+            break
         except Exception as e: 
+
             print(e)
-            selection = input("Result number doesn't exist, input again")
+            selection = input("Result number doesn't exist, input again: ")
 
 
 if __name__ == "__main__":
