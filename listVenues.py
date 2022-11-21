@@ -25,7 +25,7 @@ def listVenues(port_num):
                 "_id" : "$venue",
                 "artCount":{"$count":1},
                 "refCount": {articles.find({"$reference":"id"}).count()}
-            }  
+            }
         },
         {
             "$project":
