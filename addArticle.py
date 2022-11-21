@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 import json
-def addArticle(port_num):
+def addArticle(db):
     """
     Add an article The user should be able to add an article to the collection by providing
     a unique id
@@ -11,9 +11,7 @@ def addArticle(port_num):
     """
     f = open('dblp-ref-1k.json')
     articlesJson = json.load(f)
-
-    client = MongoClient('mongodb://localhost:' + port_num)
-    db = client['291db']
+    
     articles = db["articles"]
     articles.insert_many(articlesJson)
 
