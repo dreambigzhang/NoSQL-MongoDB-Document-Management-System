@@ -23,7 +23,10 @@ def main():
     action = input("Enter\n1 Search for articles\n2 Search for authors\n3 List the venues\n4 Add an article\nAnything else to exit program \n").strip()
     if action=='1':
         searchArticle(db)
+        endFunction = input("Click anything to go back to the main menu or enter -1 to exit the program").strip()
         clear()
+        if endFunction == "-1":
+            quit()
         main()
     elif action == '2':
         searchAuthors(db)

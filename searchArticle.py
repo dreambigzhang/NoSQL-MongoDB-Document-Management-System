@@ -30,7 +30,7 @@ def searchArticle(db):
     indexCounter = 0
     resultList = []
     for line in results:
-        resultList.append(line)
+        resultList.append(line)  # to pick out result later
         print("Result #" + str(indexCounter + 1))
         indexCounter += 1
         print("Id:", line["id"])
@@ -47,6 +47,7 @@ def searchArticle(db):
             break
         try:  #doesnt fully work
             selectAns = resultList[selection -1]
+            selection_ID = selectAns["id"]
             print("Id:", selectAns["id"])
             print("Title:", selectAns["title"])
             print("Year:", selectAns["year"])
@@ -59,7 +60,13 @@ def searchArticle(db):
 
             print(e)
             selection = input("Result number doesn't exist, input again: ")
-
+    
+    db.dblp.create_index([("references", pymongo.TEXT)])
+    references = db.dblp.find({"$text": { "$search": userInput }})
+    for line in references: 
+        print(line)
+        print()
+        finalentry = input()
 
 if __name__ == "__main__":
     searchArticle("27017")
