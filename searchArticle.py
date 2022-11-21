@@ -9,7 +9,7 @@ def clear(): # clear screen for user
 
 
 
-def searchArticle(port_num): 
+def searchArticle(db): 
     '''
     Search for articles The user should be able to provide one or more keywords, and the system should retrieve all articles that match all those keywords
     (AND semantics). A keyword matches if it appears in any of title, authors, abstract, venue and year fields (the matches should be case-insensitive). For
@@ -17,9 +17,7 @@ def searchArticle(port_num):
     abstract and the authors in addition to the fields shown before. If the article is referenced by other articles, the id, the title, and the year of those
     references should be also listed
     '''
-    clear()
-    client = MongoClient('mongodb://localhost:' + port_num)
-    db = client['291db']
+
 
     userInput = input("Input one or more keywords all separated by a space: ")  # list of separated keywords
     clear()
