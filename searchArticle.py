@@ -7,7 +7,7 @@ def clear(): # clear screen for user
     else:
         _ = system('clear')
 
-
+PYTHONDONTWRITEBYTECODE=1
 
 def searchArticle(db): 
     '''
@@ -22,7 +22,7 @@ def searchArticle(db):
     userInput = input("Input one or more keywords all separated by a space: ")  # list of separated keywords
     clear()
     # print(userInput)
-    db.dblp.drop_indexes()
+
     db.dblp.create_index([("abstract", pymongo.TEXT), ("authors" , pymongo.TEXT), ("title", pymongo.TEXT), ("venue", pymongo.TEXT), ("year",pymongo.TEXT)])
 
     results = []
@@ -41,12 +41,16 @@ def searchArticle(db):
         print()
 
     selection = input("Input result number to see more about it. Or input anything else to exit: ")
-    while(1): 
+    selection_ID = 0 
+    while(1):  
+        # see if int
         try:
             selection = int(selection) 
         except: 
             break
-        try:  #doesnt fully work
+
+        # upload results
+        try:
             selectAns = resultList[selection -1]
             selection_ID = selectAns["id"]
             print("Id:", selectAns["id"])
@@ -58,17 +62,18 @@ def searchArticle(db):
             print()
             break
         except Exception as e: 
+            # number out of bounds
+            selection = input("Result number doesn't exist, input again, or input anything else to exit: ")
 
-            print(e)
-            selection = input("Result number doesn't exist, input again: ")
-    
-    db.dblp.drop_indexes()
-    db.dblp.create_index([("abstract", pymongo.TEXT)])
-    references = db.dblp.find({"$text": { "$search": selection_ID }})
+    db.dblp.drop_indexes()  
+    db.dblp.create_index([("references", pymongo.TEXT)])
+1   
+    references = db.dblp.find([{"$text": { "$search": selection_ID }}])
+
+    print(references)
     for line in references: 
         print(line)
         print()
-        finalentry = input("Enter anything to go back into main screen or enter -1 to exit the program")
 
 if __name__ == "__main__":
     searchArticle("27017")
