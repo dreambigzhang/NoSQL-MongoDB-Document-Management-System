@@ -27,7 +27,8 @@ def addArticle(db):
             "authors": authors,
             "year": year,
             "abstract": None,
-            "venue": None
+            "venue": None,
+            "n_citation": 0
         })
     print("Insert successful")
     return
