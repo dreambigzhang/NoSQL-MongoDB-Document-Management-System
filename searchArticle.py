@@ -37,10 +37,10 @@ def searchArticle(db):
         print("Id:", line["id"])
         print("Title:", line["title"])
         print("Year:", line["year"])
-        print("Venue:", line["venue"])
-        print()
+        print("Venue:", line["venue"] , "\n")
 
     selection = input("Input result number to see more about it. Or input anything else to exit: ")
+    clear()
     selection_ID = 0 
     while(1):  
         # see if int
@@ -58,22 +58,22 @@ def searchArticle(db):
             print("Year:", selectAns["year"])
             print("Venue:", selectAns["venue"])
             print("Abstract:", selectAns["abstract"])
-            print("Authors:", ", ".join(selectAns["authors"]))
-            print()
+            print("Authors:", ", ".join(selectAns["authors"]) , "\n")
             break
         except Exception as e: 
             # number out of bounds
             selection = input("Result number doesn't exist, input again, or input anything else to exit: ")
 
     db.dblp.drop_indexes()  
-    db.dblp.create_index([("references", pymongo.TEXT)])
-1   
-    references = db.dblp.find([{"$text": { "$search": selection_ID }}])
+    db.dblp.create_index([("references", pymongo.TEXT)])   
+    references = db.dblp.find({"$text": { "$search": selection_ID }})
 
-    print(references)
+    print("This article is referenced by these articles:")
     for line in references: 
-        print(line)
-        print()
+        if(selection_ID in line["references"]):
+            print("Id:", line["id"])
+            print("Title:", line["title"])
+            print("Year:", line["year"], "\n")
 
 if __name__ == "__main__":
     searchArticle("27017")
