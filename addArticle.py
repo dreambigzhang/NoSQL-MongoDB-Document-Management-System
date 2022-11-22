@@ -12,9 +12,8 @@ def addArticle(db):
 
     print("**Add Article**")
     id = input("Enter unique id: ")
-    result = []
     result = db.dblp.find({"id":id})
-    if result != []:
+    for item in result:
         print("id entered not unqiue")
         input("Enter anything to return to the main menu")
         return
