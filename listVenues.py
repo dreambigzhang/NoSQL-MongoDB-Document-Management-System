@@ -18,10 +18,19 @@ def listVenues(db):
 
     cursor = db.dblp.aggregate([
         {
+            "$lookup":
+                {
+                    "from":"dblp",
+                    "localField":"id",
+                    "foreignField":"references",
+                    "as":"referenced"
+                }
+        },
+        {
             "$group" : {
                 "_id" : "$venue",
                 "artCount":{"$count":1},
-                "refCount": {db.dblp.find({"$text": { "$search": "id"}}).count()}
+                "refCount": {"$size":"$referenced"},#{db.dblp.count_documents({"$text": { "$search": "id"}})}
             }
         },
         {
