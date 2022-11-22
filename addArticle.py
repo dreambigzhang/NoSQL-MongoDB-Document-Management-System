@@ -21,7 +21,7 @@ def addArticle(db):
     authors = input("Enter author(s) separated by spaces: ").split()
     authors = [author.strip() for author in authors]
     year = input("Enter year: ")
-    db.dblp.insert({
+    db.dblp.insert_one({
             "id":id,
             "title": title,
             "authors": authors,
@@ -29,6 +29,7 @@ def addArticle(db):
             "abstract": None,
             "venue": None
         })
+    print("Insert successful")
     return
     '''
     try:
