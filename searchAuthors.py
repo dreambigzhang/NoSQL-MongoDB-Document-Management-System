@@ -7,7 +7,7 @@ def clear(): # clear screen for user
     else:
         _ = system('clear')
 
-def searchAuthors(db): 
+def searchAuthors(db):  # returns what user wants to do after finishing from function
     """
     Search for authors The user should be able to provide a keyword  and see all authors whose names contain the keyword (the matches should be case-
     insensitive). For each author, list the author name and the number of publications. The user should be able to select an author and see the title, year and
@@ -24,14 +24,13 @@ def searchAuthors(db):
     results = []
     results = db.dblp.find({"$text": { "$search": userInput }}).sort("year", -1)   
 
-    if results.count == 0: 
-        print("No results found")
-        return
+    counter = 0 # check how many results we got
 
     # save authors and save amount of matches
     authorDict = {}
     
     for line in results:
+        counter += 1
         author_list = line["authors"] # to make case insensitive
         for i in range(len(author_list)):
             if userInput.lower() in author_list[i].lower():
@@ -40,6 +39,9 @@ def searchAuthors(db):
                 else:
                     authorDict[author_list[i]] = 1
 
+    if counter == 0: 
+        finalInput = input("There were no results, enter anything to go back to main menu or enter -1 to exit program")
+        return finalInput
     
 
     count = 0
@@ -52,16 +54,24 @@ def searchAuthors(db):
         print("Number of publications:", authorDict[match], "\n")
 
 
-    userInput = input("Input result number to find out more about the author, or anything else to continue: ")
+    userInput = input("Input result number to find out more about the author, or anything else to continue, or -1 to exit program: ")
     try:
         userInput = int(userInput)
     except: 
-        return
+        return userInput
     chosen_author = author_list[userInput - 1]
-    results = []
-    results = db.dblp.find({"$text": { "$search": chosen_author }}).sort("year", -1) 
+    # results = []
+    # results = db.dblp.find({"$text": { "$search": chosen_author }}).sort("year", -1) 
+    # for line in results: 
+    #     if chosen_author in line["authors"]:
+    #         print("Title:", line["title"])
+    #         print("Year:", line["year"])
+    #         print("Venue:", line["venue"] , "\n")
+    results = db.dblp.find({"authors":chosen_author}).sort("year", -1)
     for line in results: 
-        if chosen_author in line["authors"]:
-            print("Title:", line["title"])
-            print("Year:", line["year"])
-            print("Venue:", line["venue"] , "\n")
+        print("Title:", line["title"])
+        print("Year:", line["year"])
+        print("Venue:", line["venue"] , "\n")
+    
+    userInput = input("Input result number to find out more about the author, or anything else to continue, or -1 to exit program: ")
+
