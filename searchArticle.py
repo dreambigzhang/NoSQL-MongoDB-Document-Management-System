@@ -22,7 +22,7 @@ def searchArticle(db):
     userInput = input("Input one or more keywords all separated by a space: ")  # list of separated keywords
     clear()
     # print(userInput)
-
+    db.dblp.drop_indexes()
     db.dblp.create_index([("abstract", pymongo.TEXT), ("authors" , pymongo.TEXT), ("title", pymongo.TEXT), ("venue", pymongo.TEXT), ("year",pymongo.TEXT)])
 
     results = []
@@ -47,7 +47,7 @@ def searchArticle(db):
         try:
             selection = int(selection) 
         except: 
-            break
+            return
 
         # upload results
         try:
@@ -68,7 +68,7 @@ def searchArticle(db):
     db.dblp.create_index([("references", pymongo.TEXT)])   
     references = db.dblp.find({"$text": { "$search": selection_ID }})
 
-    print("This article is referenced by these articles:")
+    # print("This article is referenced by these articles:")
     for line in references: 
         if(selection_ID in line["references"]):
             print("Id:", line["id"])

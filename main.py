@@ -30,7 +30,10 @@ def main():
         main()
     elif action == '2':
         searchAuthors(db)
+        endFunction = input("Click anything to go back to the main menu or enter -1 to exit the program").strip()
         clear()
+        if endFunction == "-1":
+            quit()
         main()
     elif action == '3':
         listVenues(db)
