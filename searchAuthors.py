@@ -17,8 +17,6 @@ def searchAuthors(db):  # returns what user wants to do after finishing from fun
     userInput = input("Input an author's name: ").split()  # list of separated keywords
     userInput = userInput[0]  # only take the first word
     # print(userInput)
-    db.dblp.drop_indexes()
-    db.dblp.create_index([("authors" , pymongo.TEXT)])
 
     # find matches
     results = []

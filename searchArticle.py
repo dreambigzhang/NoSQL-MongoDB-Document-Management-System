@@ -19,14 +19,16 @@ def searchArticle(db):
     '''
 
 
-    userInput = input("Input one or more keywords all separated by a space: ")  # list of separated keywords
-    clear()
+    userInput = input("Input one or more keywords all separated by a space: ").split(" ")  # list of separated keywords
+    print(userInput)
+    userInput = " ".join("\"" + input + "\"" for input in userInput) # string to search
+    
+    print(userInput)
     # print(userInput)
-    db.dblp.drop_indexes()
-    db.dblp.create_index([("abstract", pymongo.TEXT), ("authors" , pymongo.TEXT), ("title", pymongo.TEXT), ("venue", pymongo.TEXT), ("year",pymongo.TEXT)])
+    #db.dblp.drop_indexes()
+    dblp= db["dblp"]
 
-    results = []
-    results = db.dblp.find({"$text": { "$search": userInput }})   
+    results = dblp.find({"$text": { "$search": userInput }})   
     
     indexCounter = 0
     resultList = []
@@ -62,10 +64,8 @@ def searchArticle(db):
             break
         except Exception as e: 
             # number out of bounds
-            selection = input("Result number doesn't exist, input again, or input -1 to go quit, and anything else to go back to main menu: ")
-    db.dblp.drop_indexes()  
-    db.dblp.create_index([("references", pymongo.TEXT)])   
-    references = db.dblp.find({"$text": { "$search": selection_ID }})
+            selection = input("Result number doesn't exist, input again, or input -1 to go quit, and anything else to go back to main menu: ")  
+    references = dblp.find({"$text": { "$search": selection_ID }})
 
     # print("This article is referenced by these articles:")
     for line in references: 

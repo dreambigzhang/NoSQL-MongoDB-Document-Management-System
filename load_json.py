@@ -1,6 +1,6 @@
 import json
 from pymongo import MongoClient
-
+import pymongo
 def load_json():
     json_file = input("Input a json file: ")
     while(1):
@@ -23,6 +23,9 @@ def load_json():
             data.append(json.loads(line.strip()))
 
     dblp.insert_many(data)
+    dblp.update_many({},[{ "$set": {"year": { "$toString": "$year" } } }]
+)
+    dblp.create_index([("abstract", pymongo.TEXT), ("authors" , pymongo.TEXT), ("title", pymongo.TEXT), ("venue", pymongo.TEXT), ("year",pymongo.TEXT), ("references", pymongo.TEXT)],default_language = "none")
     #for line in data:  to visualize what is happening
        #print(line)
        #print()
