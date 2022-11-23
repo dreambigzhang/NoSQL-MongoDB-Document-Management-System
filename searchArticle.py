@@ -27,7 +27,7 @@ def searchArticle(db):
 
     results = []
     results = db.dblp.find({"$text": { "$search": userInput }})   
-
+    
     indexCounter = 0
     resultList = []
     for line in results:
@@ -47,7 +47,7 @@ def searchArticle(db):
         try:
             selection = int(selection) 
         except: 
-            return
+            return selection
 
         # upload results
         try:
@@ -62,8 +62,7 @@ def searchArticle(db):
             break
         except Exception as e: 
             # number out of bounds
-            selection = input("Result number doesn't exist, input again, or input anything else to exit: ")
-
+            selection = input("Result number doesn't exist, input again, or input -1 to go quit, and anything else to go back to main menu: ")
     db.dblp.drop_indexes()  
     db.dblp.create_index([("references", pymongo.TEXT)])   
     references = db.dblp.find({"$text": { "$search": selection_ID }})
