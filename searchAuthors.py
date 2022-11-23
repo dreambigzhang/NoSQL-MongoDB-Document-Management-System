@@ -22,7 +22,7 @@ def searchAuthors(db):
 
     # find matches
     results = []
-    results = db.dblp.find({"$text": { "$search": userInput }}).sort("year")   
+    results = db.dblp.find({"$text": { "$search": userInput }}).sort("year", -1)   
 
     # save authors and save amount of matches
     authorDict = {}
@@ -36,15 +36,30 @@ def searchAuthors(db):
                 else:
                     authorDict[author_list[i]] = 1
 
-    
+    if results == []: 
+        input("No results found, Enter anything to continue")
+        return
+
     count = 0
     author_list = []
     for match in authorDict.keys():
         print("Result #" + str(count+1))
         count += 1
         print(match)
-        author_list.append(match)
+        author_list.append(match) # for finding author
         print("Number of publications:", authorDict[match], "\n")
 
 
-    userInput = input("Input result number to find out more about the author")
+    userInput = input("Input result number to find out more about the author, or anything else to continue: ")
+    try:
+        userInput = int(userInput)
+    except: 
+        return
+    chosen_author = author_list[userInput - 1]
+    results = []
+    results = db.dblp.find({"$text": { "$search": chosen_author }}).sort("year", -1) 
+    for line in results: 
+        if chosen_author in line["authors"]:
+            print("Title:", line["title"])
+            print("Year:", line["year"])
+            print("Venue:", line["venue"] , "\n")
