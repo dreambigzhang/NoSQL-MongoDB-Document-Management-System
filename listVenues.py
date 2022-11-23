@@ -12,22 +12,25 @@ def listVenues(db):
     print("**List Top Venues")
     
     topNum = int(input("Enter the number of top venues: "))
-    db.dblp.create_index([("reference",pymongo.TEXT)])
-
-
+    #db.dblp.create_index([("references",pymongo.TEXT)])
+    
     cursor = db.dblp.aggregate([
-       
-         {
-            "$addFields":
+        
+        {
+            "$lookup":
             {
-                "referenced": 5 #db.dblp.count_documents({"$text": { "$search": "id"}})
+                "from":"dblp",
+                "localField":"id",
+                "foreignField":"references",
+                "as":"referenced"
             }
         },
+        
         {
             "$group" : {
                 "_id" : "$venue",
                 "artCount":{"$count":{}},
-                "refCount": {"$sum":"$referenced"}#{db.dblp.count_documents({"$text": { "$search": "id"}})}
+                "refCount": {"$sum":{"$size":["$referenced"]}}#{db.dblp.count_documents({"$text": { "$search": "id"}})}
             }
         },
         {
@@ -41,9 +44,25 @@ def listVenues(db):
             "$limit": topNum
         }
     ])
+
     for venue in cursor:
         print(venue)
     quit()
+
+'''
+{
+            "$unwind":{
+                "path": "$referenced"
+            }
+        },'''
+'''
+{
+            "$addFields":
+            {
+                "referenced": db.dblp.count_documents({"$text": {"$search":{"$in": "id"}}}) #db.dblp.count_documents({"$text": {"$search": "id"}})
+            }
+        },
+'''
 '''
  {
             "$addFields":
@@ -63,3 +82,13 @@ def listVenues(db):
             }
         },
        '''
+'''
+        {
+            "$lookup": {
+                "from": "dblp",
+                "let": { "reference": "$reference" },
+                "pipeline": [],#[{ "$match": { "$expr": { "id": {"$in": "reference" }}}}],
+                "as": "referenced"
+            }
+        },
+'''
