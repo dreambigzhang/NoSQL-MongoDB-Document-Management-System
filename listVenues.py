@@ -12,10 +12,9 @@ def listVenues(db):
     print("**List Top Venues")
     
     topNum = int(input("Enter the number of top venues: "))
-    #db.dblp.create_index([("references",pymongo.TEXT)])
+    db.dblp.create_index([("references",pymongo.TEXT)])
     
     cursor = db.dblp.aggregate([
-        
         {
             "$lookup":
             {
@@ -33,6 +32,7 @@ def listVenues(db):
                 "refCount": {"$sum":{"$size":["$referenced"]}}#{db.dblp.count_documents({"$text": { "$search": "id"}})}
             }
         },
+
         {
             "$project":
                 {"venue":1,"artCount":1, "refCount": 1} #,"refCount": 1
@@ -54,7 +54,7 @@ def listVenues(db):
             "$unwind":{
                 "path": "$referenced"
             }
-        },'''
+},'''
 '''
 {
             "$addFields":
@@ -89,6 +89,17 @@ def listVenues(db):
                 "let": { "reference": "$reference" },
                 "pipeline": [],#[{ "$match": { "$expr": { "id": {"$in": "reference" }}}}],
                 "as": "referenced"
+            }
+        },
+'''
+'''
+{
+            "$lookup":
+            {
+                "from":"dblp",
+                "localField":"id",
+                "foreignField":"references",
+                "as":"referenced"
             }
         },
 '''
