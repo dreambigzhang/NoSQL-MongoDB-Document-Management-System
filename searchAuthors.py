@@ -24,6 +24,10 @@ def searchAuthors(db):
     results = []
     results = db.dblp.find({"$text": { "$search": userInput }}).sort("year", -1)   
 
+    if results.count == 0: 
+        print("No results found")
+        return
+
     # save authors and save amount of matches
     authorDict = {}
     
@@ -36,9 +40,7 @@ def searchAuthors(db):
                 else:
                     authorDict[author_list[i]] = 1
 
-    if results == []: 
-        input("No results found, Enter anything to continue")
-        return
+    
 
     count = 0
     author_list = []
