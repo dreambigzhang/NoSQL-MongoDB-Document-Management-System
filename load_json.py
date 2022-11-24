@@ -13,7 +13,7 @@ def load_json():
     dblp.drop()
 
     json_file = input("Input a json file: ")
-    os.system('mongoimport --db=db --collection=dblp --type=json '+json_file.strip())
+    os.system('mongoimport --db 291db --collection dblp --type=json --file '+json_file.strip())
     '''
     while(1):
         try: 
@@ -33,6 +33,7 @@ def load_json():
     dblp.update_many({},[{ "$set": {"year": { "$toString": "$year" } } }]
 )
     '''
+    dblp.create_index([("references",1),("id",1)])
     dblp.create_index([("abstract", pymongo.TEXT), ("authors" , pymongo.TEXT), ("title", pymongo.TEXT), ("venue", pymongo.TEXT), ("year",pymongo.TEXT), ("references", pymongo.TEXT)],default_language = "none")
     #for line in data:  to visualize what is happening
        #print(line)
