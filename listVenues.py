@@ -49,8 +49,9 @@ def listVenues(db):
         print("Venue: " + venue["_id"])
         print("Art Count:", venue["artCount"])
         print("Reference Count:" , venue["refCount"] , '\n')
-
-    quit()
+    selection = input("Enter -1 to quit, anything else to return to the main menu")
+    return selection
+    
 
 '''
 {
