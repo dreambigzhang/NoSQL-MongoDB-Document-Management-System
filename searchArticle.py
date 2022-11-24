@@ -20,10 +20,10 @@ def searchArticle(db):
 
 
     userInput = input("Input one or more keywords all separated by a space: ").split(" ")  # list of separated keywords
-    print(userInput)
+    #print(userInput)
     userInput = " ".join("\"" + input + "\"" for input in userInput) # string to search
     
-    print(userInput)
+    #print(userInput)
     # print(userInput)
     #db.dblp.drop_indexes()
     dblp= db["dblp"]
@@ -40,6 +40,10 @@ def searchArticle(db):
         print("Title:", line["title"])
         print("Year:", line["year"])
         print("Venue:", line["venue"] , "\n")
+    
+    if indexCounter == 0: 
+        finalInput = input("There were no results, enter anything to go back to main menu or enter -1 to exit program: ")
+        return finalInput
 
     selection = input("Input result number to see more about it. Or input anything else to exit: ")
     clear()

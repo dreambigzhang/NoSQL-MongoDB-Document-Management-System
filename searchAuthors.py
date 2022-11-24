@@ -38,7 +38,7 @@ def searchAuthors(db):  # returns what user wants to do after finishing from fun
                     authorDict[author_list[i]] = 1
 
     if counter == 0: 
-        finalInput = input("There were no results, enter anything to go back to main menu or enter -1 to exit program")
+        finalInput = input("There were no results, enter anything to go back to main menu or enter -1 to exit program: ")
         return finalInput
     
 
@@ -54,6 +54,8 @@ def searchAuthors(db):  # returns what user wants to do after finishing from fun
 
     userInput = input("Input result number to find out more about the author, or anything else to continue, or -1 to exit program: ")
     try:
+        if userInput == "-1":
+            return userInput
         userInput = int(userInput)
     except: 
         return userInput
@@ -71,5 +73,6 @@ def searchAuthors(db):  # returns what user wants to do after finishing from fun
         print("Year:", line["year"])
         print("Venue:", line["venue"] , "\n")
     
-    userInput = input("Input result number to find out more about the author, or anything else to continue, or -1 to exit program: ")
+    userInput = input("Enter anything to go back to main menu or -1 to exit the program")
+    return userInput
 
