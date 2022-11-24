@@ -1,4 +1,3 @@
-
 from os import system, name
 def clear(): # clear screen for user
     if name == 'nt':
@@ -12,7 +11,6 @@ def searchAuthors(db):  # returns what user wants to do after finishing from fun
     insensitive). For each author, list the author name and the number of publications. The user should be able to select an author and see the title, year and
     venue of all articles by that author. The result should be sorted based on year with more recent articles shown first.
     """
-    clear()
     print("**Search Author**")
     userInput = input("Input an author's name: ").split()  # list of separated keywords
     userInput = userInput[0]  # only take the first word

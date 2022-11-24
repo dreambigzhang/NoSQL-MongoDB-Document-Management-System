@@ -1,13 +1,4 @@
 
-from os import system, name
-def clear(): # clear screen for user
-    if name == 'nt':
-        _ = system('cls')
-    else:
-        _ = system('clear')
-
-PYTHONDONTWRITEBYTECODE=1
-
 def searchArticle(db): 
     '''
     Search for articles The user should be able to provide one or more keywords, and the system should retrieve all articles that match all those keywords
@@ -45,7 +36,7 @@ def searchArticle(db):
         return finalInput
 
     selection = input("Input result number to see more about it. Or input anything else to exit: ")
-    clear()
+    
     selection_ID = 0 
     while(1):  
         # see if int
