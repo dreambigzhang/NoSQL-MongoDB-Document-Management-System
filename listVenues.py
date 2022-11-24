@@ -12,7 +12,7 @@ def listVenues(db):
     print("**List Top Venues")
     
     topNum = int(input("Enter the number of top venues: "))
-    db.dblp.create_index([("references",pymongo.TEXT)])
+    #db.dblp.create_index([("references",pymongo.TEXT)])
     
     cursor = db.dblp.aggregate([
         {
@@ -46,7 +46,10 @@ def listVenues(db):
     ])
 
     for venue in cursor:
-        print(venue)
+        print("Venue: " + venue["_id"])
+        print("Art Count:", venue["artCount"])
+        print("Reference Count:" , venue["refCount"] , '\n')
+
     quit()
 
 '''
