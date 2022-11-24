@@ -1,5 +1,3 @@
-from pymongo import MongoClient
-import pymongo
 def addArticle(db):
     """
     Add an article The user should be able to add an article to the collection by providing

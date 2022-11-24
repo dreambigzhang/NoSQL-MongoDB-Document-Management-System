@@ -1,5 +1,3 @@
-from pymongo import MongoClient
-import pymongo
 def listVenues(db): 
     """
     List the venues The user should be able to enter a number n and see a listing of top n venues. For each venue, 

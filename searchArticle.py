@@ -1,5 +1,4 @@
-import pymongo
-from pymongo import MongoClient
+
 from os import system, name
 def clear(): # clear screen for user
     if name == 'nt':
