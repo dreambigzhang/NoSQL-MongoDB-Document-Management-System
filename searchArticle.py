@@ -51,7 +51,10 @@ def searchArticle(db):
     while(1):  
         # see if int
         try:
+            if selection == "-1": 
+                return selection
             selection = int(selection) 
+            
         except: 
             return selection
 
