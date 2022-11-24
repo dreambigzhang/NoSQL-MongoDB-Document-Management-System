@@ -36,12 +36,18 @@ def main():
             quit()
         main()
     elif action == '3':
-        listVenues(db)
+        endFunction = listVenues(db)
         clear()
+        if endFunction == "-1":
+            client.close()
+            quit()
         main()
     elif action == '4':
-        addArticle(db)
+        endFunction = addArticle(db)
         clear()
+        if endFunction == "-1":
+            client.close()
+            quit()
         main()
     else:
         client.close()
