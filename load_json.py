@@ -1,14 +1,9 @@
 import json
 from pymongo import MongoClient
 import pymongo
+import os
 def load_json():
-    json_file = input("Input a json file: ")
-    while(1):
-        try: 
-            open(json_file)
-            break
-        except:
-            json_file = input("Invalid file, input a valid file: ")
+    
     port_num = input("Input a port number: ")
     client = MongoClient('mongodb://localhost:' + port_num)
 
@@ -16,6 +11,18 @@ def load_json():
 
     dblp = db["dblp"]
     dblp.drop()
+
+    json_file = input("Input a json file: ")
+    os.system('mongoimport --db=db --collection=dblp --type=json '+json_file.strip())
+    '''
+    while(1):
+        try: 
+            open(json_file)
+            break
+        except:
+            json_file = input("Invalid file, input a valid file: ")
+
+    
 
     data = []
     with open(json_file) as f: 
@@ -25,6 +32,7 @@ def load_json():
     dblp.insert_many(data)
     dblp.update_many({},[{ "$set": {"year": { "$toString": "$year" } } }]
 )
+    '''
     dblp.create_index([("abstract", pymongo.TEXT), ("authors" , pymongo.TEXT), ("title", pymongo.TEXT), ("venue", pymongo.TEXT), ("year",pymongo.TEXT), ("references", pymongo.TEXT)],default_language = "none")
     #for line in data:  to visualize what is happening
        #print(line)
