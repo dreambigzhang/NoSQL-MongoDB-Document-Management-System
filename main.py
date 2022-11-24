@@ -25,12 +25,14 @@ def main():
         endFunction= searchArticle(db)
         clear()
         if endFunction == "-1":
+            db.close()
             quit()
         main()
     elif action == '2':
         endFunction = searchAuthors(db)
         clear()
         if endFunction == "-1":
+            db.close()
             quit()
         main()
     elif action == '3':
@@ -42,6 +44,7 @@ def main():
         clear()
         main()
     else:
+        db.close()
         quit()
 
 if __name__ == "__main__":
