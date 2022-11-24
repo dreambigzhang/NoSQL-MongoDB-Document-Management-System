@@ -73,6 +73,6 @@ def searchAuthors(db):  # returns what user wants to do after finishing from fun
         print("Year:", line["year"])
         print("Venue:", line["venue"] , "\n")
     
-    userInput = input("Enter anything to go back to main menu or -1 to exit the program")
+    userInput = input("Enter anything to go back to main menu or -1 to exit the program: ")
     return userInput
 
