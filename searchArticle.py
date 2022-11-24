@@ -18,7 +18,7 @@ def searchArticle(db):
     references should be also listed
     '''
 
-
+    print("**Search Article**")
     userInput = input("Input one or more keywords all separated by a space: ").split(" ")  # list of separated keywords
     #print(userInput)
     userInput = " ".join("\"" + input + "\"" for input in userInput) # string to search
